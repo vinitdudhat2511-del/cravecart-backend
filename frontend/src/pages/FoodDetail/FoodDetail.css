@@ -1,0 +1,153 @@
+.food-detail {
+  margin-top: 50px;
+}
+.food-detail-container {
+  display: flex;
+  gap: 40px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
+}
+.food-detail-image-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.food-detail-image-section img {
+  width: 100%;
+  border-radius: 15px;
+}
+.food-detail-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.add-to-cart-btn {
+  padding: 10px 20px;
+  background-color: tomato;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.favorite-btn {
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.food-item-counter-detail {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 5px 10px;
+  border-radius: 50px;
+  background-color: white;
+  box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+}
+.food-item-counter-detail img {
+  width: 35px;
+  cursor: pointer;
+}
+.food-detail-info-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.food-detail-info-section h2 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+.food-detail-price {
+  font-size: 28px;
+  color: tomato;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.food-detail-desc {
+  font-size: 16px;
+  color: #676767;
+  line-height: 1.5;
+  margin-bottom: 40px;
+}
+.reviews-section h3 {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+.review-card {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  color: #333;
+}
+.dark-theme .review-card {
+  background-color: #222;
+  color: #ccc;
+}
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.review-comment {
+  font-size: 14px;
+}
+.add-review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: #f4f4f4;
+  padding: 20px;
+  border-radius: 10px;
+}
+.dark-theme .add-review-form {
+  background-color: #1a1a1a;
+}
+.rating-select {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.rating-select select {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+.add-review-form textarea {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  min-height: 100px;
+  resize: vertical;
+}
+.add-review-form button {
+  padding: 10px;
+  background-color: tomato;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .food-detail-container {
+    flex-direction: column;
+  }
+}

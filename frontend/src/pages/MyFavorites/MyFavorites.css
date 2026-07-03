@@ -1,0 +1,13 @@
+.my-favorites {
+  margin-top: 50px;
+}
+.my-favorites h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+.favorites-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 30px;
+  row-gap: 50px;
+}
