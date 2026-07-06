@@ -16,12 +16,20 @@ const port = process.env.PORT || 4000;
 
 // middlewares
 app.use(express.json());
+
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  "http://localhost:5174",
+  "http://localhost:5175"
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "*",
+    origin: allowedOrigins.length > 0 ? allowedOrigins : "*",
     credentials: true,
   })
 );
+
 
 // DB connection
 connectDB();
