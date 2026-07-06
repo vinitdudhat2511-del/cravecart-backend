@@ -25,10 +25,18 @@ const allowedOrigins = [
 
 app.use(
   cors({
-    origin: allowedOrigins.length > 0 ? allowedOrigins : "*",
+    origin: (origin, callback) => {
+      // Dynamic reflect: Allow request origin if it matches allowed lists, is localhost, or if origin is null (postman/curl)
+      if (!origin || allowedOrigins.includes(origin) || origin.startsWith("http://localhost:") || allowedOrigins.length === 0) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
+
 
 
 // DB connection
