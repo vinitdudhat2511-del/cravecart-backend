@@ -22,4 +22,21 @@ userRouter.post("/profile/update", authMiddleware, updateProfile);
 userRouter.post("/profile/get", authMiddleware, getProfile);
 userRouter.post("/points", authMiddleware, getPoints);
 
+// Temporary helper route to promote users to admin
+import userModel from "../models/userModel.js";
+userRouter.post("/make-admin", async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await userModel.findOneAndUpdate({ email }, { role: "admin" }, { new: true });
+    if (user) {
+      res.json({ success: true, message: `Successfully upgraded ${email} to admin!` });
+    } else {
+      res.json({ success: false, message: "User not found" });
+    }
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+});
+
 export default userRouter;
+
