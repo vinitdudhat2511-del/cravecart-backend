@@ -10,19 +10,19 @@ const validatePromo = async (req, res) => {
       res.json({ success: false, message: "Invalid or inactive promo code" });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.json({ success: false, message: "Error validating promo code" });
   }
 };
 
-// Also adding a helper to create one for testing
+// Admin-only: create a new promo code
 const addPromo = async (req, res) => {
   try {
     const newPromo = new promoModel(req.body);
     await newPromo.save();
     res.json({ success: true, message: "Promo added" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.json({ success: false, message: "Error" });
   }
 };

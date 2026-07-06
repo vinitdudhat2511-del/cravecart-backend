@@ -1,0 +1,56 @@
+.eta-timer {
+  background: linear-gradient(135deg, #fff8f0, #fff3e0);
+  border: 1px solid #ffe0b2;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-top: 10px;
+}
+
+.eta-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.eta-icon {
+  font-size: 16px;
+}
+
+.eta-label {
+  font-size: 13px;
+  color: #888;
+  flex: 1;
+}
+
+.eta-countdown {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ff6b35;
+  font-variant-numeric: tabular-nums;
+}
+
+.eta-bar-bg {
+  height: 6px;
+  background: #ffe0b2;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.eta-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff6b35, #ffa726);
+  border-radius: 3px;
+  transition: width 0.9s linear;
+}
+
+.eta-delivered {
+  background: linear-gradient(135deg, #f0fff4, #e8f5e9);
+  border-color: #a5d6a7;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #388e3c;
+}

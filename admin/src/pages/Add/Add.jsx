@@ -1,17 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Add.css";
 import { assets } from "../../assets/assets";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useContext } from "react";
 import { StoreContext } from "../../context/StoreContext";
-import { useEffect } from "react";
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const Add = ({url}) => {
-  const navigate=useNavigate();
-  const {token,admin} = useContext(StoreContext);
+const AVAILABLE_TAGS = ["Vegan", "Spicy", "Gluten-Free", "Best Seller", "New"];
+
+const TAG_EMOJIS = {
+  "Vegan":       "🌱",
+  "Spicy":       "🌶️",
+  "Gluten-Free": "🌾",
+  "Best Seller": "⭐",
+  "New":         "🆕",
+};
+
+const Add = ({ url }) => {
+  const navigate = useNavigate();
+  const { token, admin } = useContext(StoreContext);
   const [image, setImage] = useState(false);
+  const [selectedTags, setSelectedTags] = useState([]);
   const [data, setData] = useState({
     name: "",
     description: "",
@@ -25,6 +35,12 @@ const Add = ({url}) => {
     setData((data) => ({ ...data, [name]: value }));
   };
 
+  const toggleTag = (tag) => {
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    );
+  };
+
   const onSubmitHandler = async (event) => {
     event.preventDefault();
     const formData = new FormData();
@@ -33,37 +49,35 @@ const Add = ({url}) => {
     formData.append("price", Number(data.price));
     formData.append("category", data.category);
     formData.append("image", image);
+    formData.append("tags", JSON.stringify(selectedTags));
 
-    const response = await axios.post(`${url}/api/food/add`, formData,{headers:{token}});
+    const response = await axios.post(`${url}/api/food/add`, formData, {
+      headers: { token },
+    });
     if (response.data.success) {
-      setData({
-        name: "",
-        description: "",
-        price: "",
-        category: "Salad",
-      });
+      setData({ name: "", description: "", price: "", category: "Salad" });
       setImage(false);
+      setSelectedTags([]);
       toast.success(response.data.message);
     } else {
       toast.error(response.data.message);
     }
   };
-  useEffect(()=>{
-    if(!admin && !token){
+
+  useEffect(() => {
+    if (!admin && !token) {
       toast.error("Please Login First");
-       navigate("/");
+      navigate("/");
     }
-  },[])
+  }, []);
+
   return (
     <div className="add">
       <form onSubmit={onSubmitHandler} className="flex-col">
         <div className="add-img-upload flex-col">
           <p>Upload image</p>
           <label htmlFor="image">
-            <img
-              src={image ? URL.createObjectURL(image) : assets.upload_area}
-              alt=""
-            />
+            <img src={image ? URL.createObjectURL(image) : assets.upload_area} alt="" />
           </label>
           <input
             onChange={(e) => setImage(e.target.files[0])}
@@ -73,6 +87,7 @@ const Add = ({url}) => {
             required
           />
         </div>
+
         <div className="add-product-name flex-col">
           <p>Product name</p>
           <input
@@ -84,6 +99,7 @@ const Add = ({url}) => {
             required
           />
         </div>
+
         <div className="add-product-description flex-col">
           <p>Product description</p>
           <textarea
@@ -95,15 +111,11 @@ const Add = ({url}) => {
             required
           ></textarea>
         </div>
+
         <div className="add-category-price">
           <div className="add-category flex-col">
             <p>Product category</p>
-            <select
-              name="category"
-              required
-              onChange={onChangeHandler}
-              value={data.category}
-            >
+            <select name="category" required onChange={onChangeHandler} value={data.category}>
               <option value="Salad">Salad</option>
               <option value="Rolls">Rolls</option>
               <option value="Deserts">Deserts</option>
@@ -126,9 +138,27 @@ const Add = ({url}) => {
             />
           </div>
         </div>
-        <button type="submit" className="add-btn">
-          ADD
-        </button>
+
+        {/* Dietary Tags */}
+        <div className="add-tags flex-col">
+          <p>Dietary Tags</p>
+          <div className="tags-grid">
+            {AVAILABLE_TAGS.map((tag) => (
+              <label key={tag} className={`tag-checkbox ${selectedTags.includes(tag) ? "selected" : ""}`}>
+                <input
+                  type="checkbox"
+                  checked={selectedTags.includes(tag)}
+                  onChange={() => toggleTag(tag)}
+                  hidden
+                />
+                <span>{TAG_EMOJIS[tag]}</span>
+                <span>{tag}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <button type="submit" className="add-btn">ADD</button>
       </form>
     </div>
   );

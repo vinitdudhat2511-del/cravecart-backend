@@ -1,6 +1,6 @@
 .list-table-format{
     display: grid;
-    grid-template-columns: 0.5fr 2fr 1fr 1fr 0.5fr;
+    grid-template-columns: 0.5fr 2fr 1fr 1fr 0.5fr 0.5fr;
     align-items: center;
     gap: 10px;
     padding: 12px 15px;
@@ -12,6 +12,23 @@
 }
 .list-table-format img{
     width: 50px;
+}
+
+/* Tags column */
+.list-tags {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.list-tag-chip {
+    font-size: 16px;
+    cursor: default;
+}
+
+.list-tag-none {
+    color: #ccc;
+    font-size: 13px;
 }
 
 @media (max-width:600px) {

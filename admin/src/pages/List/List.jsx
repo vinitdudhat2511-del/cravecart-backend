@@ -6,9 +6,17 @@ import { useContext } from "react";
 import { StoreContext } from "../../context/StoreContext";
 import { useNavigate } from "react-router-dom";
 
+const TAG_EMOJIS = {
+  "Vegan":       "🌱",
+  "Spicy":       "🌶️",
+  "Gluten-Free": "🌾",
+  "Best Seller": "⭐",
+  "New":         "🆕",
+};
+
 const List = ({ url }) => {
   const navigate = useNavigate();
-  const { token,admin } = useContext(StoreContext);
+  const { token, admin } = useContext(StoreContext);
   const [list, setList] = useState([]);
 
   const fetchList = async () => {
@@ -33,6 +41,7 @@ const List = ({ url }) => {
       toast.error("Error");
     }
   };
+
   useEffect(() => {
     if (!admin && !token) {
       toast.error("Please Login First");
@@ -49,22 +58,31 @@ const List = ({ url }) => {
           <b>Image</b>
           <b>Name</b>
           <b>Category</b>
+          <b>Tags</b>
           <b>Price</b>
           <b>Action</b>
         </div>
-        {list.map((item, index) => {
-          return (
-            <div key={index} className="list-table-format">
-              <img src={`${url}/images/` + item.image} alt="" />
-              <p>{item.name}</p>
-              <p>{item.category}</p>
-              <p>${item.price}</p>
-              <p onClick={() => removeFood(item._id)} className="cursor">
-                X
-              </p>
+        {list.map((item, index) => (
+          <div key={index} className="list-table-format">
+            <img src={`${url}/images/` + item.image} alt="" />
+            <p>{item.name}</p>
+            <p>{item.category}</p>
+            <div className="list-tags">
+              {item.tags && item.tags.length > 0
+                ? item.tags.map((tag) => (
+                    <span key={tag} className="list-tag-chip" title={tag}>
+                      {TAG_EMOJIS[tag] || "🏷️"}
+                    </span>
+                  ))
+                : <span className="list-tag-none">—</span>
+              }
             </div>
-          );
-        })}
+            <p>${item.price}</p>
+            <p onClick={() => removeFood(item._id)} className="cursor">
+              X
+            </p>
+          </div>
+        ))}
       </div>
     </div>
   );

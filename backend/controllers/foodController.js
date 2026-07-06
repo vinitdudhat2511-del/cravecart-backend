@@ -3,26 +3,39 @@ import userModel from "../models/userModel.js";
 import fs from "fs";
 
 // add food items
-
 const addFood = async (req, res) => {
   let image_filename = `${req.file.filename}`;
-  const food = new foodModel({
-    name: req.body.name,
-    description: req.body.description,
-    price: req.body.price,
-    category: req.body.category,
-    image: image_filename,
-  });
   try {
     let userData = await userModel.findById(req.body.userId);
     if (userData && userData.role === "admin") {
+      // Parse tags from comma-separated string or JSON array
+      let tags = [];
+      if (req.body.tags) {
+        try {
+          tags = JSON.parse(req.body.tags);
+        } catch {
+          tags = req.body.tags.split(",").map((t) => t.trim()).filter(Boolean);
+        }
+      }
+
+      const food = new foodModel({
+        name: req.body.name,
+        description: req.body.description,
+        price: req.body.price,
+        category: req.body.category,
+        image: image_filename,
+        tags,
+      });
       await food.save();
       res.json({ success: true, message: "Food Added" });
     } else {
+      // Clean up the uploaded file if user is not an admin
+      fs.unlink(`uploads/${image_filename}`, () => {});
       res.json({ success: false, message: "You are not admin" });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    fs.unlink(`uploads/${image_filename}`, () => {});
     res.json({ success: false, message: "Error" });
   }
 };
@@ -33,7 +46,7 @@ const listFood = async (req, res) => {
     const foods = await foodModel.find({});
     res.json({ success: true, data: foods });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.json({ success: false, message: "Error" });
   }
 };
@@ -51,7 +64,7 @@ const removeFood = async (req, res) => {
       res.json({ success: false, message: "You are not admin" });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.json({ success: false, message: "Error" });
   }
 };

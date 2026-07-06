@@ -19,20 +19,24 @@ const App = () => {
   return (
     <>
       {showLogin ? <LoginPopup setShowLogin={setShowLogin} /> : <></>}
+      <ToastContainer position="top-right" autoClose={3000} />
+
+      {/* Navbar is sticky — must be inside the width-constrained wrapper */}
       <div className="app">
-        <ToastContainer />
         <Navbar setShowLogin={setShowLogin} />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/order" element={<PlaceOrder />} />
-          <Route path="/verify" element={<Verify />} />
-          <Route path="/myorders" element={<MyOrders />} />
+          <Route path="/"          element={<Home />} />
+          <Route path="/cart"      element={<Cart />} />
+          <Route path="/order"     element={<PlaceOrder />} />
+          <Route path="/verify"    element={<Verify />} />
+          <Route path="/myorders"  element={<MyOrders />} />
           <Route path="/favorites" element={<MyFavorites />} />
-          <Route path="/profile" element={<UserProfile />} />
-          <Route path="/food/:id" element={<FoodDetail />} />
+          <Route path="/profile"   element={<UserProfile />} />
+          <Route path="/food/:id"  element={<FoodDetail />} />
         </Routes>
       </div>
+
+      {/* Footer is full-width outside the constrained .app */}
       <Footer />
     </>
   );

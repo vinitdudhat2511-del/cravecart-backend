@@ -13,7 +13,7 @@ const addToCart = async (req, res) => {
     await userModel.findByIdAndUpdate(req.body.userId, { cartData });
     res.json({ success: true, message: "Added to Cart" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.json({ success: false, message: "Error" });
   }
 };
@@ -31,7 +31,7 @@ const removeFromCart = async (req, res) => {
     await userModel.findByIdAndUpdate(req.body.userId, { cartData });
     res.json({ success: true, message: "Removed from Cart" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.json({ success: false, message: "Error" });
   }
 };
@@ -43,7 +43,7 @@ const getCart = async (req, res) => {
     let cartData = await userData.cartData;
     res.json({ success: true, cartData: cartData });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.json({ success: false, message: "Error" });
   }
 };

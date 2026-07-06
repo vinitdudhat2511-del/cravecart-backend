@@ -1,66 +1,154 @@
-.login-popup{
-    position: absolute;
-    z-index: 1;
-    width: 100%;
-    height: 100%;
-    background-color: #00000090;
-    display: grid; 
+/* ── Overlay backdrop ────────────────────────────────────── */
+.login-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(15, 12, 10, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: grid;
+  place-items: center;
+  animation: fadeIn 0.2s ease;
 }
-.login-popup-container{
-    place-self: center;
-    width:max(23vw,330px);
-    color: #808080;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-    padding: 25px 30px;
-    border-radius: 8px;
-    font-size: 14px;
-    animation: fadeIn 0.5s;
 
+/* ── Modal card ──────────────────────────────────────────── */
+.login-popup-container {
+  width: min(440px, 92vw);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 36px 36px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.2);
+  animation: fadeInUp 0.3s ease both;
+  position: relative;
+  overflow: hidden;
 }
-.login-popup-title{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: black;
+
+/* Top gradient stripe */
+.login-popup-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary));
 }
-.login-popup-title img{
-    width: 16px;
-    cursor: pointer;
+
+/* ── Title row ───────────────────────────────────────────── */
+.login-popup-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text);
 }
-.login-popup-inputs{
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+.login-popup-title h2 {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
 }
-.login-popup-inputs input{
-    outline: none;
-    border: 1px solid #c9c9c9;
-    padding: 10px;
-    border-radius: 4px;
+.login-popup-title img {
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  border-radius: 50%;
+  padding: 5px;
+  background: var(--bg-subtle);
+  transition: all 0.2s ease;
+  opacity: 0.7;
 }
-.login-popup-container button{
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    color: white;
-    background-color: tomato;
-    font-size: 15px;
-    cursor: pointer;
+.login-popup-title img:hover {
+  background: #fee2e2;
+  opacity: 1;
 }
-.login-popup-condition{
-    display: flex;
-    align-items: start;
-    gap: 8px;
-    margin-top: -15px;
+
+/* ── Inputs ──────────────────────────────────────────────── */
+.login-popup-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
-.login-popup-condition input{
-    margin-top: 5px;
+.login-popup-inputs input {
+  outline: none;
+  border: 1.5px solid var(--border);
+  padding: 13px 16px;
+  border-radius: var(--radius-md);
+  background: var(--bg-subtle);
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.2s ease;
 }
-.login-popup p span{
-    color: tomato;
-    font-weight: 500;
-    cursor: pointer;
+.login-popup-inputs input::placeholder {
+  color: var(--text-light);
+}
+.login-popup-inputs input:focus {
+  border-color: var(--primary);
+  background: var(--bg-card);
+  box-shadow: 0 0 0 3px rgba(255,107,53,0.12);
+}
+
+/* ── Submit button ───────────────────────────────────────── */
+.login-popup-container button[type="submit"] {
+  width: 100%;
+  border: none;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.3px;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(255,107,53,0.3);
+}
+.login-popup-container button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-primary);
+}
+.login-popup-container button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+/* ── T&C row ─────────────────────────────────────────────── */
+.login-popup-condition {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: -8px;
+}
+.login-popup-condition input[type="checkbox"] {
+  margin-top: 3px;
+  width: 15px;
+  height: 15px;
+  accent-color: var(--primary);
+  flex-shrink: 0;
+}
+.login-popup-condition p {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ── Toggle link ─────────────────────────────────────────── */
+.login-popup > form > p:last-child {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+}
+.login-popup p span {
+  color: var(--primary);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.2s ease;
+}
+.login-popup p span:hover {
+  text-decoration-color: var(--primary);
 }

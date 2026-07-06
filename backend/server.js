@@ -8,14 +8,20 @@ import cartRouter from "./routes/cartRoute.js";
 import orderRouter from "./routes/orderRoute.js";
 import promoRouter from "./routes/promoRoute.js";
 import reviewRouter from "./routes/reviewRoute.js";
+import analyticsRouter from "./routes/analyticsRoute.js";
 
 // app config
 const app = express();
-const port =process.env.PORT || 4000;
+const port = process.env.PORT || 4000;
 
-//middlewares
+// middlewares
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || "*",
+    credentials: true,
+  })
+);
 
 // DB connection
 connectDB();
@@ -28,6 +34,7 @@ app.use("/api/cart", cartRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/promo", promoRouter);
 app.use("/api/review", reviewRouter);
+app.use("/api/analytics", analyticsRouter);
 
 app.get("/", (req, res) => {
   res.send("API Working");

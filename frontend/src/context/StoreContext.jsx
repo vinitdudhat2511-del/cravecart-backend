@@ -6,13 +6,13 @@ export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
-  // Temporarily changed to localhost for testing new features! Change back to Render URL for production.
-  const url = "https://cravecart-backend-wh1i.onrender.com"; // "https://food-delivery-backend-5b6g.onrender.com";
+  const url = import.meta.env.VITE_API_URL || "https://cravecart-backend-wh1i.onrender.com";
   const [token, setToken] = useState("");
   const [food_list, setFoodList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [favorites, setFavorites] = useState([]);
   const [discountPercent, setDiscountPercent] = useState(0);
+  const [loyaltyPoints, setLoyaltyPoints] = useState(0);
 
   const addToCart = async (itemId) => {
     if (!cartItems[itemId]) {
@@ -21,15 +21,13 @@ const StoreContextProvider = (props) => {
       setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
     }
     if (token) {
-      const response=await axios.post(
+      const response = await axios.post(
         url + "/api/cart/add",
         { itemId },
         { headers: { token } }
       );
-      if(response.data.success){
-        toast.success("item Added to Cart")
-      }else{
-        toast.error("Something went wrong")
+      if (!response.data.success) {
+        toast.error("Something went wrong");
       }
     }
   };
@@ -37,15 +35,13 @@ const StoreContextProvider = (props) => {
   const removeFromCart = async (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
     if (token) {
-      const response= await axios.post(
+      const response = await axios.post(
         url + "/api/cart/remove",
         { itemId },
         { headers: { token } }
       );
-      if(response.data.success){
-        toast.success("item Removed from Cart")
-      }else{
-        toast.error("Something went wrong")
+      if (!response.data.success) {
+        toast.error("Something went wrong");
       }
     }
   };
@@ -55,7 +51,9 @@ const StoreContextProvider = (props) => {
     for (const item in cartItems) {
       if (cartItems[item] > 0) {
         let itemInfo = food_list.find((product) => product._id === item);
-        totalAmount += itemInfo.price * cartItems[item];
+        if (itemInfo) {
+          totalAmount += itemInfo.price * cartItems[item];
+        }
       }
     }
     return totalAmount;
@@ -87,6 +85,21 @@ const StoreContextProvider = (props) => {
     );
     if (response.data.success) {
       setFavorites(response.data.favorites);
+    }
+  };
+
+  const loadLoyaltyPoints = async (token) => {
+    try {
+      const response = await axios.post(
+        url + "/api/user/points",
+        {},
+        { headers: { token } }
+      );
+      if (response.data.success) {
+        setLoyaltyPoints(response.data.loyaltyPoints);
+      }
+    } catch {
+      // silently fail — points are non-critical
     }
   };
 
@@ -136,6 +149,7 @@ const StoreContextProvider = (props) => {
         setToken(localStorage.getItem("token"));
         await loadCardData(localStorage.getItem("token"));
         await loadFavorites(localStorage.getItem("token"));
+        await loadLoyaltyPoints(localStorage.getItem("token"));
       }
     }
     loadData();
@@ -159,7 +173,10 @@ const StoreContextProvider = (props) => {
     discountPercent,
     setDiscountPercent,
     applyPromo,
+    loyaltyPoints,
+    setLoyaltyPoints,
   };
+
   return (
     <StoreContext.Provider value={contextValue}>
       {props.children}

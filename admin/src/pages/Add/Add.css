@@ -41,3 +41,45 @@
         width: max(40%,220px);
     }
 }
+
+/* Dietary Tags */
+.add-tags {
+    width: max(40%, 280px);
+}
+
+.add-tags p {
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.tags-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 14px;
+    border: 1.5px solid #ddd;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #555;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.tag-checkbox:hover {
+    border-color: tomato;
+    color: tomato;
+}
+
+.tag-checkbox.selected {
+    background: tomato;
+    border-color: tomato;
+    color: white;
+    font-weight: 600;
+}

@@ -5,12 +5,13 @@ import { Route, Routes } from "react-router-dom";
 import Add from "./pages/Add/Add";
 import List from "./pages/List/List";
 import Orders from "./pages/Orders/Orders";
+import Analytics from "./pages/Analytics/Analytics";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Login from "./components/Login/Login";
 
 const App = () => {
-  const url = "https://cravecart-backend-wh1i.onrender.com";
+  const url = import.meta.env.VITE_API_URL || "https://cravecart-backend-wh1i.onrender.com";
   return (
     <div>
       <ToastContainer />
@@ -19,10 +20,11 @@ const App = () => {
       <div className="app-content">
         <Sidebar />
         <Routes>
-          <Route path="/" element={<Login url={url}/>} />
-          <Route path="/add" element={<Add url={url}/>} />
-          <Route path="/list" element={<List url={url}/>} />
-          <Route path="/orders" element={<Orders url={url}/>} />
+          <Route path="/"          element={<Login     url={url} />} />
+          <Route path="/add"       element={<Add       url={url} />} />
+          <Route path="/list"      element={<List      url={url} />} />
+          <Route path="/orders"    element={<Orders    url={url} />} />
+          <Route path="/analytics" element={<Analytics url={url} />} />
         </Routes>
       </div>
     </div>

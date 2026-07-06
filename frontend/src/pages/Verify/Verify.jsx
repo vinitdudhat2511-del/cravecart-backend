@@ -6,30 +6,47 @@ import axios from 'axios';
 import { toast } from "react-toastify";
 
 const Verify = () => {
-    const [searchParams,setSearchParams]=useSearchParams();
-    const success=searchParams.get("success");
-    const orderId=searchParams.get("orderId");
-    const {url} =useContext(StoreContext);
-    const navigate= useNavigate();
+    const [searchParams] = useSearchParams();
+    const success = searchParams.get("success");
+    const orderId = searchParams.get("orderId");
+    const { url, token, setLoyaltyPoints } = useContext(StoreContext);
+    const navigate = useNavigate();
 
-    const verifyPayment=async()=>{
-        const response= await axios.post(url+"/api/order/verify",{success,orderId});
-        if(response.data.success){
+    const verifyPayment = async () => {
+        const response = await axios.post(url + "/api/order/verify", { success, orderId });
+        if (response.data.success) {
+            // Refresh loyalty points so Navbar/PlaceOrder reflect new balance immediately
+            if (token) {
+                try {
+                    const pointsRes = await axios.post(
+                        url + "/api/user/points",
+                        {},
+                        { headers: { token } }
+                    );
+                    if (pointsRes.data.success) {
+                        setLoyaltyPoints(pointsRes.data.loyaltyPoints);
+                    }
+                } catch {
+                    // non-critical — ignore
+                }
+            }
+            toast.success("🎉 Order placed! Points credited to your account.");
             navigate("/myorders");
-            toast.success("Order Placed Successfully");
-        }else{
-            toast.error("Something went wrong");
+        } else {
+            toast.error("Payment was not completed");
             navigate("/");
         }
     }
-    useEffect(()=>{
+
+    useEffect(() => {
         verifyPayment();
-    },[])
-  return (
-    <div className='verify'>
-        <div className="spinner"></div>
-    </div>
-  )
+    }, [])
+
+    return (
+        <div className='verify'>
+            <div className="spinner"></div>
+        </div>
+    )
 }
 
 export default Verify

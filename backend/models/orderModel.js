@@ -6,8 +6,10 @@ const orderSchema = new mongoose.Schema({
   amount: { type: Number, required: true },
   address: { type: Object, required: true },
   status: { type: String, default: "Food Processing" },
-  date: { type: Date, default: Date.now() },
+  date: { type: Date, default: Date.now },
   payment: { type: Boolean, default: false },
+  pointsEarned: { type: Number, default: 0 },
+  pointsRedeemed: { type: Number, default: 0 },
 });
 
 const orderModel =

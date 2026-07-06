@@ -13,8 +13,15 @@ const Cart = () => {
     getTotalCartAmount,
     url,
     discountPercent,
-    applyPromo
+    applyPromo,
+    loyaltyPoints,
   } = useContext(StoreContext);
+
+  const subtotal = getTotalCartAmount();
+  const promoDiscount = subtotal * (discountPercent / 100);
+  const deliveryFee = subtotal === 0 ? 0 : 2;
+  const total = subtotal === 0 ? 0 : (subtotal * (1 - discountPercent / 100) + 2);
+  const pointsToEarn = Math.floor(total);
 
   const [promoInput, setPromoInput] = useState("");
 
@@ -59,27 +66,33 @@ const Cart = () => {
           <div>
             <div className="cart-total-details">
               <p>Subtotals</p>
-              <p>${getTotalCartAmount()}</p>
+              <p>${subtotal.toFixed(2)}</p>
             </div>
             {discountPercent > 0 && (
               <>
                 <hr />
                 <div className="cart-total-details">
                   <p>Discount ({discountPercent}%)</p>
-                  <p>-${(getTotalCartAmount() * (discountPercent / 100)).toFixed(2)}</p>
+                  <p>-${promoDiscount.toFixed(2)}</p>
                 </div>
               </>
             )}
             <hr />
             <div className="cart-total-details">
               <p>Delivery Fee</p>
-              <p>${getTotalCartAmount()===0?0:2}</p>
+              <p>${deliveryFee}</p>
             </div>
             <hr />
             <div className="cart-total-details">
               <b>Total</b>
-              <b>${getTotalCartAmount()===0?0:(getTotalCartAmount() * (1 - discountPercent / 100) + 2).toFixed(2)}</b>
+              <b>${total.toFixed(2)}</b>
             </div>
+            {subtotal > 0 && (
+              <div className="cart-points-preview">
+                🏆 You&apos;ll earn <strong>~{pointsToEarn} loyalty points</strong> on this order
+                {loyaltyPoints >= 100 && " · Redeem 100 pts for $5 off at checkout"}
+              </div>
+            )}
           </div>
           <button onClick={()=>navigate('/order')}>PROCEED TO CHECKOUT</button>
         </div>

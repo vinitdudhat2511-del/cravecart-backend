@@ -37,3 +37,9 @@
         width: 17px;
     }
 }
+
+.sidebar-emoji {
+    font-size: max(1.5vw, 16px);
+    display: flex;
+    align-items: center;
+}

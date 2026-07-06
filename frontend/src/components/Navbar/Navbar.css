@@ -1,133 +1,223 @@
-.navbar{
-    padding: 20px 0px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.navbar .logo{
-    width: 150px;
-}
-
-.navbar-menu{
-    display: flex;
-    list-style: none;
-    gap: 20px;
-    color: #49557e;
-    font-size: 18px;
-}
-.navbar-right{
-    display: flex;
-    align-items: center;
-    gap: 40px;
+/* ── Sticky glass navbar ────────────────────────────────── */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 14px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 249, 247, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.3s ease;
 }
 
-.navbar button{
-    background: transparent;
-    font-size: 16px;
-    color: #49557e;
-    border: 1px solid tomato;
-    padding: 10px 30px;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: 0.3s;
+.dark-theme .navbar {
+  background: rgba(15, 14, 14, 0.85);
 }
 
-.navbar button:hover{
-    background-color: #fff4f2;
+.navbar .logo {
+  width: 140px;
 }
 
-.navbar .active{
-    padding-bottom: 2px;
-    border-bottom: 2px solid #49557e;
+/* ── Nav links ──────────────────────────────────────────── */
+.navbar-menu {
+  display: flex;
+  list-style: none;
+  gap: 32px;
+  font-size: 15px;
+  font-weight: 500;
 }
 
-.navbar li{
-    cursor: pointer;
-}
-.navbar-search-icon{
-    position: relative;
+.navbar-menu a,
+.navbar-menu li {
+  color: var(--text-muted);
+  position: relative;
+  padding-bottom: 3px;
+  transition: color 0.2s ease;
+  cursor: pointer;
 }
 
-.navbar-search-icon .dot{
-    position: absolute;
-    min-width: 10px;
-    min-height: 10px;
-    background-color: tomato;
-    border-radius: 5px;
-    top: -8px;
-    right: -8px;
+.navbar-menu a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 1px;
+  transition: width 0.25s ease;
 }
-.navbar-profile{
-    position: relative;
+
+.navbar-menu a:hover { color: var(--primary); }
+.navbar-menu a:hover::after { width: 100%; }
+
+.navbar .active {
+  color: var(--primary) !important;
+  padding-bottom: 3px;
 }
-.nav-profile-dropdown{
-    position: absolute;
-    display: none;
-    right: 0;
-    z-index: 1;
+.navbar .active::after {
+  width: 100%;
 }
-.navbar-profile:hover .nav-profile-dropdown{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background-color: #fff2ef;
-    padding: 12px 25px;
-    border-radius: 4px;
-    border: 1px solid tomato;
-    outline: 2px solid white;
-    list-style: none;
+
+/* ── Right side ─────────────────────────────────────────── */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
-.nav-profile-dropdown li{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
+
+/* theme toggle */
+.theme-toggle {
+  border: none !important;
+  background: transparent !important;
+  font-size: 20px !important;
+  padding: 0 !important;
+  cursor: pointer;
+  line-height: 1;
+  transition: transform 0.3s ease;
 }
-.nav-profile-dropdown img{
-    width: 20px;
+.theme-toggle:hover {
+  transform: rotate(20deg);
 }
-.nav-profile-dropdown li:hover{
-    color: tomato;
+
+/* sign-in button */
+.navbar button:not(.theme-toggle) {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  padding: 10px 24px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  letter-spacing: 0.3px;
 }
-@media (max-width:1050px) {
-    .navbar .logo{
-        width: 140px;
-    } 
-    .navbar-menu{
-        gap: 20px;
-        font-size: 17px;
-    }
-    .navbar-right{
-        gap: 30px;
-    }
-    .navbar-right img{
-        width: 22px;
-    }
-    .navbar-right button{
-        padding: 8px 25px;
-    }
+.navbar button:not(.theme-toggle):hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-primary);
 }
-@media (max-width:900px) {
-    .navbar .logo{
-        width: 120px;
-    } 
-    .navbar-menu{
-        gap: 15px;
-        font-size: 16px;
-    }
-    .navbar-right{
-        gap: 20px;
-    }
-    .navbar-right img{
-        width: 20px;
-    }
-    .navbar-right button{
-        padding: 7px 20px;
-        font-size: 15px;
-    }
+
+/* ── Cart icon ──────────────────────────────────────────── */
+.navbar-search-icon {
+  position: relative;
 }
-@media (max-width:750px) { 
-    .navbar-menu{
-        display: none;
-    }
+.navbar-search-icon img {
+  width: 24px;
+  transition: transform 0.2s ease;
+  filter: var(--icon-filter, none);
+}
+.navbar-search-icon img:hover {
+  transform: scale(1.12);
+}
+.navbar-search-icon .dot {
+  position: absolute;
+  min-width: 10px;
+  min-height: 10px;
+  background: var(--primary);
+  border-radius: 50%;
+  top: -5px;
+  right: -5px;
+  border: 2px solid var(--bg);
+  animation: pulse-dot 1.5s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.3); }
+}
+
+/* ── Profile dropdown ───────────────────────────────────── */
+.navbar-profile {
+  position: relative;
+  cursor: pointer;
+}
+.navbar-profile > img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  padding: 1px;
+  transition: box-shadow 0.2s ease;
+}
+.navbar-profile:hover > img {
+  box-shadow: 0 0 0 3px rgba(255,107,53,0.25);
+}
+
+.nav-profile-dropdown {
+  position: absolute;
+  display: none;
+  right: 0;
+  top: calc(100% + 10px);
+  z-index: 10;
+  min-width: 180px;
+}
+.navbar-profile:hover .nav-profile-dropdown {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--bg-card);
+  padding: 10px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  list-style: none;
+  animation: fadeIn 0.2s ease;
+}
+.nav-profile-dropdown hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2px 0;
+}
+.nav-profile-dropdown li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.15s ease;
+}
+.nav-profile-dropdown li:hover {
+  background: var(--bg-subtle);
+  color: var(--primary);
+}
+.nav-profile-dropdown img {
+  width: 18px;
+  opacity: 0.7;
+}
+
+/* ── Loyalty points badge ───────────────────────────────── */
+.points-badge-item {
+  background: linear-gradient(135deg, #fff9c4, #fff59d) !important;
+  border-radius: var(--radius-sm) !important;
+  margin: 0 0 2px !important;
+  border: 1px solid #ffe082;
+}
+.points-badge-icon { font-size: 15px; }
+.points-badge-text {
+  font-weight: 700 !important;
+  color: #e65100 !important;
+  font-size: 13px !important;
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 1050px) {
+  .navbar .logo { width: 120px; }
+  .navbar-menu  { gap: 22px; font-size: 14px; }
+  .navbar-right { gap: 16px; }
+}
+@media (max-width: 900px) {
+  .navbar-right { gap: 12px; }
+  .navbar button:not(.theme-toggle) { padding: 8px 18px; }
+}
+@media (max-width: 750px) {
+  .navbar-menu { display: none; }
 }

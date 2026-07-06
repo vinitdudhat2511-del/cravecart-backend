@@ -1,0 +1,51 @@
+.diet-filter {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 5%;
+  flex-wrap: wrap;
+}
+
+.diet-filter-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #888;
+  white-space: nowrap;
+  margin: 0;
+}
+
+.diet-pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.diet-pill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 16px;
+  border-radius: 24px;
+  border: 1.5px solid #e8e8e8;
+  background: #fafafa;
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.diet-pill:hover {
+  border-color: #ff6b35;
+  color: #ff6b35;
+  background: #fff5f2;
+}
+
+.diet-pill.active {
+  background: linear-gradient(135deg, #ff6b35, #ff8f65);
+  border-color: transparent;
+  color: white;
+  box-shadow: 0 3px 10px rgba(255, 107, 53, 0.35);
+  transform: translateY(-1px);
+}
