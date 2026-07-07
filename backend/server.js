@@ -42,6 +42,20 @@ app.use(
 // DB connection
 connectDB();
 
+import mongoose from "mongoose";
+app.use((req, res, next) => {
+  // Allow index check route regardless of DB status
+  if (req.path === "/") return next();
+  
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(503).json({
+      success: false,
+      message: "Database is offline. Please check your MongoDB Atlas IP Whitelist (Network Access) to ensure 'Allow Access from Anywhere' (0.0.0.0/0) is active, or verify your MONGO_URL credentials in your Render environment variables."
+    });
+  }
+  next();
+});
+
 // api endpoints
 app.use("/api/food", foodRouter);
 app.use("/images", express.static("uploads"));

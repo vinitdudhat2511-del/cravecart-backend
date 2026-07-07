@@ -7,9 +7,11 @@ if (dns && typeof dns.setDefaultResultOrder === "function") {
 }
 
 export const connectDB = async () => {
-  await mongoose
-    .connect(
-      process.env.MONGO_URL
-    )
-    .then(() => console.log("DB Connected"));
+  try {
+    await mongoose.connect(process.env.MONGO_URL);
+    console.log("DB Connected successfully");
+  } catch (error) {
+    console.error("Database connection failed:", error.message);
+    // Do not crash the process; allow the server to run and return errors to client
+  }
 };
