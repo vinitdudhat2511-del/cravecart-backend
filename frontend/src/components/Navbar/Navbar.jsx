@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import "./Navbar.css";
 import { assets } from "../../assets/frontend_assets/assets";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 
 const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("home");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
   const {
     getTotalCartAmount,
     token,
@@ -23,11 +25,28 @@ const Navbar = ({ setShowLogin }) => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const logout = () => {
     localStorage.removeItem("token");
     setToken("");
+    setDropdownOpen(false);
     toast.success("Logout Successfully");
     navigate("/");
+  };
+
+  const handleNavigate = (path) => {
+    setDropdownOpen(false);
+    navigate(path);
   };
 
   return (
@@ -75,9 +94,13 @@ const Navbar = ({ setShowLogin }) => {
         {!token ? (
           <button onClick={() => setShowLogin(true)}>sign in</button>
         ) : (
-          <div className="navbar-profile">
-            <img src={assets.profile_icon} alt="" />
-            <ul className="nav-profile-dropdown">
+          <div className="navbar-profile" ref={dropdownRef}>
+            <img
+              src={assets.profile_icon}
+              alt=""
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+            />
+            <ul className={`nav-profile-dropdown ${dropdownOpen ? "open" : ""}`}>
               {loyaltyPoints > 0 && (
                 <>
                   <li className="points-badge-item">
@@ -87,17 +110,17 @@ const Navbar = ({ setShowLogin }) => {
                   <hr />
                 </>
               )}
-              <li onClick={() => navigate("/profile")}>
+              <li onClick={() => handleNavigate("/profile")}>
                 <img src={assets.profile_icon} alt="" />
                 <p>Profile</p>
               </li>
               <hr />
-              <li onClick={() => navigate("/myorders")}>
+              <li onClick={() => handleNavigate("/myorders")}>
                 <img src={assets.bag_icon} alt="" />
                 <p>Orders</p>
               </li>
               <hr />
-              <li onClick={() => navigate("/favorites")}>
+              <li onClick={() => handleNavigate("/favorites")}>
                 <p style={{ fontSize: "20px" }}>❤️</p>
                 <p>Favorites</p>
               </li>

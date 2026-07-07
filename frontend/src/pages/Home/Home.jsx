@@ -11,11 +11,16 @@ const Home = () => {
   const [dietTag, setDietTag] = useState("All");
 
   return (
-    <div>
+    <div className="home-page">
       <Header />
+
+      <div className="home-section-divider" />
       <ExploreMenu category={category} setCategory={setCategory} />
+
       <DietFilter dietTag={dietTag} setDietTag={setDietTag} />
       <FoodDisplay category={category} dietTag={dietTag} />
+
+      <div className="home-section-divider" />
       <AppDownload />
     </div>
   )

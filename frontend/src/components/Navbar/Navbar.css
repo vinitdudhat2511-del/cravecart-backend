@@ -150,13 +150,10 @@
 
 .nav-profile-dropdown {
   position: absolute;
-  display: none;
   right: 0;
-  top: calc(100% + 10px);
+  top: calc(100% + 8px);
   z-index: 10;
-  min-width: 180px;
-}
-.navbar-profile:hover .nav-profile-dropdown {
+  min-width: 190px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -166,8 +163,23 @@
   border: 1px solid var(--border);
   box-shadow: var(--shadow-lg);
   list-style: none;
-  animation: fadeIn 0.2s ease;
+
+  /* Hidden by default */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  pointer-events: none;
 }
+
+/* Visible when .open is added */
+.nav-profile-dropdown.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
 .nav-profile-dropdown hr {
   border: none;
   border-top: 1px solid var(--border);
@@ -183,7 +195,7 @@
   color: var(--text);
   font-size: 14px;
   font-weight: 500;
-  transition: background 0.15s ease;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 .nav-profile-dropdown li:hover {
   background: var(--bg-subtle);
