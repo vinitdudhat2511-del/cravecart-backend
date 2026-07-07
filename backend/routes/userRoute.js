@@ -10,6 +10,7 @@ import {
   getPoints,
 } from "../controllers/userController.js";
 import authMiddleware from "../middleware/auth.js";
+import userModel from "../models/userModel.js";
 
 const userRouter = express.Router();
 
@@ -23,7 +24,6 @@ userRouter.post("/profile/get", authMiddleware, getProfile);
 userRouter.post("/points", authMiddleware, getPoints);
 
 // Temporary helper route to promote users to admin
-import userModel from "../models/userModel.js";
 userRouter.post("/make-admin", async (req, res) => {
   try {
     const { email } = req.body;
@@ -39,4 +39,3 @@ userRouter.post("/make-admin", async (req, res) => {
 });
 
 export default userRouter;
-
